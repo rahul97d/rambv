@@ -1,25 +1,22 @@
-name: Disala - MacOS RDP
-on: 
+name: Windows - LiteManager
+
+on:
   workflow_dispatch:
 
 jobs:
   build:
-    name: Disala - MacOS RDP - Subscribe
-    runs-on: macos-latest
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 9999
     
-    steps:                 
-    - name: Enabling RDP Access
-      env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      run: |
-          curl -s -o start.sh -L "https://www.dropbox.com/scl/fi/7fu9mlaicr4avjjjw1qnw/Start.sh?rlkey=j7av7diz8efar8aiywdoeqj1k&dl=1"
-          chmod +x start.sh
-          bash start.sh "$NGROK_AUTH_TOKEN"
-          
-    - name: Log In Details To VNC Server
-      run: |
-         chmod +x login.sh
-         bash login.sh
-         
-    - name: MacOS System running...
-      uses: mxschmitt/action-tmate@v2
+    steps:
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/chamod12/lm_win-10_github_rdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Connect to LiteManager
+        run: cmd /c show.bat
+
+      - name: Time Counter
+        run: cmd /c loop.bat
